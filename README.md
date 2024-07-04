@@ -27,6 +27,7 @@ Unless you define a font, the default is Montserrat. If you want to change the f
 - \cvMainFont
 - \cvMainItalicFont
 - \cvMainBoldFont
+
 You can find these three variables in the "FONT OPTIONS" section in the sty file. I have put examples for using TTF or OTF files in there, too. If you define a cvMainFont, defining the bold and italic variants is optional. Please do not comment the lines so the variables are undefined if you don't use them. Instead, please leave them empty, otherwise the code will break.
 
 > [!CAUTION]
