@@ -1,5 +1,5 @@
 <p align="middle">
-<img src="https://github.com/kage-chan/ketelcv/blob/main/ScreenshotP1.png" width="300px"><img src="https://github.com/kage-chan/ketelcv/blob/main/ScreenshotP1.png" width="300px">
+<img src="https://github.com/kage-chan/ketelcv/blob/main/ScreenshotP1.png" width="300px">&numsp;<img src="https://github.com/kage-chan/ketelcv/blob/main/ScreenshotP2.png" width="300px">
 </p>
 
 # ketelcv
