@@ -1,0 +1,714 @@
+%============================================================
+% USER-CHANGABLE PARAMETERS
+%============================================================
+
+%------------------------------------------------------------
+% LANGUAGE
+% List of supported languages:
+% https://texdoc.org/serve/babel/0#subsection.1.29
+% Here please enter the languages you will be using! Only
+% good if you want to prepare CVs in different languages. If
+% you only need one language, set this to the same as when
+% you begin your cv with \begin{cv}
+%------------------------------------------------------------
+\newcommand\cvLanguages{british,ngerman}
+
+%------------------------------------------------------------
+% FONT OPTIONS
+%------------------------------------------------------------
+%\newcommand\cvMainFont{Zurich-Regular.otf}
+%\newcommand\cvMainBoldFont{Zurich-Black-BT.ttf}
+\newcommand\cvMainFont{}
+\newcommand\cvMainItalicFont{}
+%\newcommand\cvMainBoldFont{}
+\newcommand\cvHeaderFontscale{2.25}
+\newcommand\cvHeaderSubtitleFontScale{1.5}
+
+%------------------------------------------------------------
+% MARGIN
+%------------------------------------------------------------
+\newcommand\cvMarginTop{10mm}
+\newcommand\cvMarginRight{10mm}
+\newcommand\cvMarginBottom{5mm}
+\newcommand\cvMarginLeft{7mm}
+
+%------------------------------------------------------------
+% SIDEBAR
+%------------------------------------------------------------
+\newcommand\cvSidebarWidth{8.4cm}
+\newcommand\cvSidebarBorderWidth{.1mm}
+
+%------------------------------------------------------------
+% AVATAR
+%------------------------------------------------------------
+\newcommand\cvAvatarDiameter{5cm}
+\newcommand\cvAvatarBorder{2mm}
+
+%------------------------------------------------------------
+% HEADER
+%------------------------------------------------------------
+\newcommand\cvHeaderHeight{6cm}
+\newcommand\cvHeaderBorderWidth{.1mm}
+\newcommand\cvHeaderOffset{1cm}
+
+%------------------------------------------------------------
+% MAIN
+%------------------------------------------------------------
+\newcommand\cvmainspace{3}
+\newcommand\cvmainbubbleradius{6}
+\newcommand\cvmainbubbleborderwidth{1}
+
+%------------------------------------------------------------
+% EVENT
+%------------------------------------------------------------
+\newcommand\cveventdatewidth{16}
+\newcommand\cveventbubbleradius{3}
+\newcommand\cveventbubbleborderwidth{1}
+
+%------------------------------------------------------------
+% SIDEBAR
+%------------------------------------------------------------
+\newcommand\cvsidebarspace{3}
+\newcommand\cvsidebarbubbleradius{6}
+\newcommand\cvsidebarbubbleborderwidth{1}
+\newcommand\cvsidebaroffset{2}
+
+%------------------------------------------------------------
+% SEPARATOR
+%------------------------------------------------------------
+\newcommand\cvseparatorscale{1}
+
+%------------------------------------------------------------
+% COLORS
+%------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{cvSidebarBackColor}{RGB}{235, 235, 235}        % Sidebar color
+\definecolor{cvSidebarBorderColor}{RGB}{0, 0, 0}            % Sidebar border color
+\newcommand\cvSidebarBorderDraw{0}                          % If Sidebar border not needed 0, else 1
+\newcommand\cvSidebarTriangleBorderDraw{0}                  % If Sidebar triangle border not needed 0, else 1
+\definecolor{cvSidebarTextColor}{RGB}{0, 0, 0}           % Sidebar text color
+\definecolor{cvSidebarDataIconColor}{RGB}{242, 242, 242}    % Sidebar icon color
+\definecolor{cvAvatarBorderColor}{RGB}{255, 255, 255}       % Avatar border color
+\definecolor{cvHeaderBackColor}{RGB}{0, 165, 229}           % Header color
+\definecolor{cvHeaderBorderColor}{RGB}{0, 0, 0}             % Header border color
+\newcommand\cvHeaderBorderDraw{0}                           % If Header border not needed 0, else 100
+\definecolor{cvHeaderTextColor}{RGB}{255, 255, 255}         % Header text color
+\definecolor{cvMainBackColor}{RGB}{255, 255, 255}           % Main area color
+\definecolor{cvMainTextColor}{RGB}{0, 0, 0}              % Main area text color
+\definecolor{cvSidebarProgressBack}{RGB}{196, 197, 199}     % Sidebar Skill prograssbar back color
+\definecolor{cvSectionIconColor}{RGB}{0, 0, 0}
+
+
+%------------------------------------------------------------
+% SETTINGS
+%------------------------------------------------------------
+\newcommand\packagename{ketelcv2024}
+
+\usepackage[a4paper]{geometry}
+\geometry{top=\cvMarginTop, right=\cvMarginRight, bottom=\cvMarginBottom, left=\cvMarginLeft, }
+
+\setlength{\topskip}{0mm}                                   % no top margin default
+\setlength{\parindent}{0mm}                                 % no indent default
+\pagenumbering{gobble}                                      % disable page numbering
+
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, nolistsep, leftmargin=*}       % default list style
+\overfullrule=0mm
+
+
+%------------------------------------------------------------
+% ACTUAL CODE, HAVE FUN, PLEASE DON'T BREAK THINGS :)
+%------------------------------------------------------------
+%------------------------------------------------------------
+% PARACOL SETUP (TEXT COLUMNS)
+%------------------------------------------------------------
+% Paracol: https://ftp.rrzn.uni-hannover.de/pub/mirror/tex-archive/macros/latex/contrib/paracol/paracol-man.pdf
+\usepackage{paracol}
+\setlength{\columnsep}{\dimexpr\cvMarginLeft+\cvMarginRight}
+\columnratio{0.4}%
+\gdef\cvSidebarActive{0}
+\gdef\cvSidebarUsed{0}
+\gdef\cvEducationEntryFirst{1}
+
+%------------------------------------------------------------
+% HELPING VARIABLES
+%------------------------------------------------------------
+\newlength{\cvDataEntryIconSize}
+\newlength{\cvEducationEntryDateTextSize}
+\newlength{\cvEducationEntryDataTextSize}
+\newlength{\cvMainWorkExperienceEntryDateTextSize}
+\newlength{\cvMainTrainingEntryDateTextSize}
+\newlength{\cvHeaderNameSize}
+
+%------------------------------------------------------------
+% PACKAGES NEEDED
+%------------------------------------------------------------
+\usepackage{hyperref}
+\usepackage{ifthen}
+\usepackage{tabularx}
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\usepackage{fontspec}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes, calc}
+\usepackage{atbegshi}
+\usepackage{adjustbox}
+\usepackage{rotating}
+\usepackage{qrcode}
+\usepackage[\cvLanguages]{babel}
+\usepackage{ragged2e}
+\usepackage{lipsum}
+
+% Very ugly, but I couldn't find anything better...
+\ifthenelse{\equal{\cvMainFont}{\empty}}
+{
+    \usepackage[sfdefault]{roboto}
+}{
+    \ifthenelse{\equal{\cvMainBoldFont}{\empty}}
+    {
+        \ifthenelse{\equal{\cvMainItalicFont}{\empty}}
+        {
+            \setmainfont{\cvMainFont}
+        }    
+    }{
+        \ifthenelse{\equal{\cvMainItalicFont}{\empty}}
+        {
+            \setmainfont{\cvMainFont}[
+                BoldFont=\cvMainBoldFont
+            ]
+        }{
+            \setmainfont{\cvMainFont}[
+                BoldFont=\cvMainBoldFont,
+                ItalicFont=\cvMainItalicFont
+            ]
+        }
+    }
+}
+
+%\setmainfont{\cvMainFont}[]
+%BoldFont=\cvMainBoldFont,
+%ItalicFont=\cvMainItalicFont]
+
+
+
+%------------------------------------------------------------
+% cv
+%------------------------------------------------------------
+% Main CV function that prepares the entire layout.
+% Parameter 1:              Avatar image (relative to tex file)
+% Parameter 2:              First name
+% Parameter 3:              Family name
+% Parameter 4:              Your title for header
+% Parameter 5:              Language
+% Parameter 6 (optional):   Job description
+% NewDocumentEnvironment: https://texdoc.org/serve/xparse/0
+\NewDocumentEnvironment{cv}{m m m m O{british} O{CV Template by D. Ketel}}{%
+    \selectlanguage{#5}
+
+    \ifthenelse{\equal{\cvSidebarActive}{0}}{%
+        \gdef\cvSidebarActive{1}
+        \ifthenelse{\equal{\cvSidebarUsed}{0}}{%
+            \gdef\cvSidebarUsed{1}
+        }{%
+            \PackageError{\packagename}{Sidebar can only be used once}{}%
+        }%
+    }{%
+        \PackageError{\packagename}{Sidebar is already active}{}%
+    }%
+
+    \AtBeginShipoutFirst{%
+    \newlength{\cvTitleLength}
+    \settowidth{\cvTitleLength}{\large{\uppercase{#4}}}
+    \settowidth{\cvHeaderNameSize}{
+        \raggedright\noindent{
+            \textbf{\fontsize{45}{50}\selectfont\textcolor{cvHeaderTextColor} {\uppercase{#3}}}}
+    }
+    
+    
+        \begin{tikzpicture}[remember picture, overlay]
+            %
+            % Draw the header banner
+            %
+            \ifthenelse{\cvHeaderBorderDraw=0}{
+                \node[rectangle, fill=cvHeaderBackColor, anchor=north west, minimum width=\paperwidth, minimum height=\cvHeaderHeight](sidebar) at ([shift={(0,-\cvHeaderOffset)}]current page.north west){
+                \hspace{\dimexpr\cvSidebarWidth+\cvMarginRight}\begin{minipage}[t]{\dimexpr\paperwidth-\cvSidebarWidth-\cvMarginRight\relax}%
+                    \raggedright\noindent{\fontsize{45}{50}\selectfont\textcolor{cvHeaderTextColor} {\uppercase{#2}}\\[.3cm]%
+                    \noindent\textbf{\fontsize{45}{50}\selectfont\textcolor{cvHeaderTextColor} {\uppercase{#3}}}}\\[.3cm]
+                    \noindent\textcolor{cvHeaderTextColor}{ \rule{\cvTitleLength}{.5pt}}\\[.2cm]%
+                    \noindent\color{cvHeaderTextColor}\large{\uppercase{#4}}\\[-.1cm]%
+                    \noindent\textcolor{cvHeaderTextColor}{ \rule{\cvTitleLength}{.5pt}}
+                \end{minipage}%
+                };%
+            }{
+                \node[rectangle, draw=cvHeaderBorderColor, line width=\cvHeaderBorderWidth, fill=cvHeaderBackColor, anchor=north west, minimum width=\paperwidth, minimum height=\cvHeaderHeight](sidebar) at ([shift={(0,-\cvHeaderOffset)}]current page.north west){
+                \hspace{\dimexpr\cvSidebarWidth+\cvMarginRight}\begin{minipage}[t]{\dimexpr\paperwidth-\cvSidebarWidth-\cvMarginRight\relax}%
+                    \raggedright\noindent{\fontsize{45}{50}\selectfont\textcolor{cvHeaderTextColor} {\uppercase{#2}}\\[.3cm]%
+                    \noindent\textbf{\fontsize{45}{50}\selectfont\textcolor{cvHeaderTextColor} {\uppercase{#3}}}}\\[.3cm]
+                    \noindent\textcolor{cvHeaderTextColor}{\rule{\cvTitleLength }{.5pt}}\\[.2cm]%
+                    \noindent\color{cvHeaderTextColor}\large{\uppercase{#4}}\\[-.1cm]%
+                    \noindent\textcolor{cvHeaderTextColor}{\rule{\cvTitleLength}{.5pt}}
+                \end{minipage}%
+                };%
+            }
+            
+            %
+            % Draw the sidebar with the avatar
+            %
+            \ifthenelse{\cvSidebarBorderDraw=0}{
+                \node[rectangle, fill=cvSidebarBackColor, anchor=north west, minimum width=\cvSidebarWidth, minimum height=\paperheight+1mm](sidebar) at ([shift={(-\cvSidebarBorderWidth,\cvSidebarBorderWidth)}]current page.north west){};%
+            }{
+                \node[rectangle, draw=cvSideBarBorderColor, fill=cvSidebarBackColor, anchor=north west, minimum width=\cvSidebarWidth, minimum height=\paperheight+1mm](sidebar) at ([shift={((-2*\cvHeaderBorderWidth),\cvHeaderBorderWidth)}]current page.north west){};%
+            }
+
+            \ifthenelse{\cvSidebarTriangleBorderDraw=0}{
+                \node[isosceles triangle, isosceles triangle apex angle=90, fill=cvHeaderBackColor, minimum size=\cvSidebarWidth+.2mm, rotate=135,anchor=north east] at ($ (current page.north west) + (-\cvHeaderBorderWidth,-\cvHeaderBorderWidth) $){};%
+            }{
+                \node[isosceles triangle, draw=cvHeaderBorderColor, isosceles triangle apex angle=90, fill=cvHeaderBackColor, minimum size=\cvSidebarWidth+.2mm, rotate=135,anchor=north east] at ($ (current page.north west) + (-\cvHeaderBorderWidth,-\cvHeaderBorderWidth) $){};%
+            }
+            
+            \draw[color=cvAvatarBorderColor, line width=\cvAvatarBorder, minimum size=\cvAvatarDiameter, path picture={\node at (path picture bounding box.center){\includegraphics[width=\cvAvatarDiameter]{./Images/#1}};}](\dimexpr{\cvSidebarWidth/2-\cvAvatarDiameter/2},{-\cvSidebarWidth/2+\cvAvatarDiameter/2+\cvAvatarBorder}) circle (\dimexpr\cvAvatarDiameter/2\relax);%
+
+            \draw[color=cvAvatarBorderColor, line width=\cvAvatarBorder, minimum size=\cvAvatarDiameter, path picture={\node at (path picture bounding box.center){\includegraphics[width=\cvAvatarDiameter]{./Images/#1}};}](\dimexpr{\cvSidebarWidth/2-\cvAvatarDiameter/2},{-\cvSidebarWidth/2+\cvAvatarDiameter/2+\cvAvatarBorder}) circle (\dimexpr\cvAvatarDiameter/2\relax);%
+
+            \node[anchor=south west] at ([shift={(\cvMarginLeft,\cvMarginBottom)}]current page.south west){\textcolor{cvSidebarTextColor}{\footnotesize{#6}}};
+        \end{tikzpicture}%
+    }
+    
+    \AtBeginShipout{%
+        \begin{tikzpicture}[overlay, remember picture]
+            \node[rectangle, fill=cvSidebarBackColor, anchor=north west, minimum width=\cvSidebarWidth, minimum height=\paperheight+1mm, blend mode=multiply](sidebar) at (current page.north west){};%
+            \node[anchor=south west] at ([shift={(\cvMarginLeft,\cvMarginBottom)}]current page.south west){\textcolor{cvSidebarTextColor}{\footnotesize{#6}}};
+        \end{tikzpicture}%
+    }
+
+    \vspace*{\dimexpr\cvHeaderHeight+\cvHeaderOffset}
+    
+    \begin{paracol}{2}%
+}{%
+    \end{paracol}%
+}%
+
+
+%------------------------------------------------------------
+% SIDEBAR
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvSidebarSectionHeader
+%------------------------------------------------------------
+% Adds a new section to the sidebar
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newcommand{\cvSidebarSectionHeader}[2] {
+	\begin{tabularx}{\linewidth}{@{}Xr@{}}
+ 		\textcolor{cvSidebarTextColor}{\Large\textbf{\uppercase{\raggedright #1}}} & \Large\textcolor{cvSectionIconColor}{#2}\\
+    \end{tabularx}\\[-2mm]
+    \raggedright\noindent\textcolor{cvHeaderBackColor}{\rule{\linewidth}{.5pt}} \\[.2cm]
+}
+
+%------------------------------------------------------------
+% cvSidebarSection
+%------------------------------------------------------------
+% Adds a new section to the sidebar
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newenvironment{cvSidebarSection}[2]{
+    \cvSidebarSectionHeader{#1}{#2}
+
+    \vspace{.4cm}%
+
+    \tabularx{\dimexpr\cvSidebarWidth-\cvMarginLeft-\cvMarginLeft}{@{}lX@{}}% 
+}{%
+    \endtabularx%
+    \vspace{.8cm}%
+}%
+
+%------------------------------------------------------------
+% cvSidebarDataEntry
+%------------------------------------------------------------
+% Adds data to the CV sidebar's data section
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newcommand{\cvSidebarDataEntry}[2] {
+    \settowidth{\cvDataEntryIconSize}{
+        \hspace{-.2cm}\adjustbox{valign=m}{
+            \begin{tikzpicture}\node[circle, fill=cvHeaderBackColor, minimum size=.8cm, inner sep=0]{\textcolor{cvSidebarDataIconColor}{#1}};\end{tikzpicture}
+        }
+        \hspace{.25cm}
+    }
+    
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        \hspace{-.2cm}\adjustbox{valign=m}{
+            \begin{tikzpicture}\node[circle, fill=cvHeaderBackColor, minimum size=.8cm, inner sep=0]{\textcolor{cvSidebarDataIconColor}{#1}};\end{tikzpicture}
+        }
+        \hspace{.25cm}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\cvSidebarWidth-\cvDataEntryIconSize-\cvMarginLeft-\cvMarginLeft-5mm}
+                \raggedright{\textcolor{cvSidebarTextColor}{#2}} \\[.15cm]
+            \end{minipage}
+        }\\[.4cm]
+    }{%
+        \PackageError{\packagename}{cvSidebarDataEntry can only be used within sidebar}{}%
+    }%
+}
+
+
+%------------------------------------------------------------
+% EDUCATION
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvSidebarEducationEntry
+%------------------------------------------------------------
+% Adds data to the CV sidebar's education section
+% Parameter 1:          Year of the qualification
+% Parameter 2:          Name of the qualification (e.g. Master of Science)
+% Parameter 3:          Location the qualification has been done
+% Parameter 4:          Major of the qualification
+\newcommand{\cvSidebarEducationEntry}[4] {
+    \settowidth{\cvEducationEntryDateTextSize}{
+        \adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvHeaderBackColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+        \hspace{.25cm} \textcolor{cvHeaderBackColor}\vline \hspace{.25cm}
+    }
+    \settoheight{\cvEducationEntryDataTextSize}{
+        \begin{minipage}{\dimexpr\cvSidebarWidth-\cvEducationEntryDateTextSize-\cvMarginLeft-\cvMarginLeft} {
+            \uppercase{\textbf{#2}}} \\[.15cm]
+            {#3} \\[.15cm]
+            \raggedright\footnotesize {#4}
+        \end{minipage}
+    }
+
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        % Execute if we are inside the sidebar
+        \hspace{-.3cm}\adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvHeaderBackColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+        \hspace{.25cm} \textcolor{cvHeaderBackColor}\vline \hspace{.25cm}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\cvSidebarWidth-\cvEducationEntryDateTextSize-\cvMarginLeft-\cvMarginLeft}
+                \textcolor{cvSidebarTextColor}{\uppercase{\textbf{#2}}} \\[.15cm]
+                \textcolor{cvSidebarTextColor}{#3} \\[.15cm]
+                \raggedright{\footnotesize{\textcolor{cvSidebarTextColor}{#4}}}
+            \end{minipage}
+        }\\
+        \\
+    }{%
+        \PackageError{\packagename}{cvSidebarEducationEntry can only be used within sidebar}{}%
+    }%
+}
+
+%------------------------------------------------------------
+% cvEducationSeparatorBar
+%------------------------------------------------------------
+% Called to inset a separation between education entries
+\newcommand{\cvEducationSeparatorBar}{
+    \textcolor{cvHeaderBackColor}{ \rule{\linewidth}{.5pt} }\\[.5cm]
+}
+
+
+%------------------------------------------------------------
+% LANGUAGES
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvSidebarLanguageEntry
+%------------------------------------------------------------
+% Adds data to the CV sidebar's language section
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newcommand{\cvSidebarLanguageEntry}[3] {
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        \hspace{-.2cm}\adjustbox{valign=c}{
+        \begin{minipage}{0.65cm}
+            \includegraphics[width=6.5mm]{./Images/#1.png}
+        \end{minipage}
+        }
+        \adjustbox{valign=c}{
+        \begin{minipage}{\dimexpr\linewidth-\cvMarginLeft}
+            {\begin{tabularx}{\linewidth}{@{}Xr}%
+                \noindent\textcolor{cvSidebarTextColor}{\textbf{#1}} & \textcolor{cvSidebarTextColor}{#2}%
+            \end{tabularx}%
+	
+            \begin{tikzpicture}[scale=1,rounded corners=0.5mm,very thin]%
+                \fill [cvSidebarProgressBack] (0,0) rectangle (.97\linewidth, 0.15);%
+                \fill [cvHeaderBackColor] (0,0) rectangle (0.97*#3\linewidth, 0.15);%
+            \end{tikzpicture}}
+        \end{minipage}
+        }\\[.5cm]
+    }{%
+        \PackageError{\packagename}{cvSidebarDataEntry can only be used within sidebar}{}%
+    }%
+}
+
+
+%------------------------------------------------------------
+% SKILLS
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvSidebarSkillEntry
+%------------------------------------------------------------
+% Renders a progress-bar to indicate a certain skill in percent.
+% Parameter 1:              Name of skill.
+% Parameter 2:              Skill level.
+% Parameter 3:              Percent of the progress-bar in range [0, 1].
+\newcommand{\cvSidebarSkillEntry}[3]{%
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr(\cvSidebarWidth-\cvMarginLeft-\cvMarginLeft)}
+                \begin{tabularx}{\linewidth}{@{}Xr@{}}%
+                    \noindent\textcolor{cvSidebarTextColor}{\textbf{#1}} & \textcolor{cvSidebarTextColor}{#2}%
+                \end{tabularx}
+                \begin{tikzpicture}[scale=1,rounded corners=0.5mm,very thin]%
+                    \fill [cvSidebarProgressBack] (0,0) rectangle (\linewidth, 0.15);%
+                    \fill [cvHeaderBackColor] (0,0) rectangle (#3\linewidth, 0.15);%
+                \end{tikzpicture}
+            \end{minipage}
+        }\\[0.3cm]
+    }{%
+        \PackageError{\packagename}{cvSidebarSkillEntry can be used only in the sidebar column}{}%
+    }%
+}%
+
+
+%------------------------------------------------------------
+% INTERESTS
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvSidebarInterestEntry
+%------------------------------------------------------------
+% Adds data to the CV sidebar's Interest section
+% Parameter 1:          1st Interest icon
+% Parameter 2:          1st Interest name
+% Parameter 1:          2nd Interest icon
+% Parameter 2:          2nd Interest name
+\newcommand{\cvSidebarInterestEntry}[4] {
+    \settowidth{\cvDataEntryIconSize}{
+        \hspace{-.2cm}\adjustbox{valign=m}{
+            \begin{tikzpicture}\node[circle, fill=cvHeaderBackColor, minimum size=.8cm, inner sep=0]{\textcolor{cvSidebarDataIconColor}{#1}};\end{tikzpicture}
+        }
+    }
+    
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        \hspace{-.2cm}\adjustbox{valign=m}{
+            \begin{tikzpicture}\node[circle, fill=cvHeaderBackColor, minimum size=.8cm, inner sep=0]{\textcolor{cvSidebarDataIconColor}{#1}};\end{tikzpicture}
+        }
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr((\cvSidebarWidth/2)-\cvDataEntryIconSize-\cvMarginLeft)}
+                \raggedright{\textcolor{cvSidebarTextColor}{#2}} \\[.15cm]
+            \end{minipage}
+        }
+        \adjustbox{valign=m}{
+            \begin{tikzpicture}\node[circle, fill=cvHeaderBackColor, minimum size=.8cm, inner sep=0]{\textcolor{cvSidebarDataIconColor}{#3}};\end{tikzpicture}
+        }
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\cvSidebarWidth-\cvDataEntryIconSize-\cvMarginLeft-\cvMarginLeft-5mm}
+                \raggedright{\textcolor{cvSidebarTextColor}{#4}} \\[.15cm]
+            \end{minipage}
+        }\\[10pt]
+    }{%
+        \PackageError{\packagename}{cvSidebarDataEntry can only be used within sidebar}{}%
+    }%
+}
+
+
+%------------------------------------------------------------
+% cvSidebarPlaceSign
+%------------------------------------------------------------
+% Should be called on last page while still in sidebar. Will
+% place the sign in the bottom of the sidebar
+% Parameter 1:          Name under Sign
+% Parameter 2:          Place
+% Parameter 3:          Offset between sign and line
+\newcommand{\cvSidebarPlaceSign}[3]{
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{%
+        \begin{tikzpicture}[remember picture, overlay, anchor=south west]
+            \node[](sidebar) at ([shift={(\cvMarginLeft,2cm)}]current page.south west){
+                \begin{minipage}[t]{\cvSidebarWidth}
+                    \includegraphics[width=\the\dimexpr0.75\linewidth\relax]{./Images/Sign.png}\\[#3]
+                    \raggedright\noindent\textcolor{cvHeaderBackColor}{\rule{\dimexpr\cvSidebarWidth-\cvMarginLeft-\cvMarginLeft}{.5pt}}\\
+                    \raggedright{\textcolor{cvMainTextColor}{#1, #2, \today}}
+                \end{minipage}
+            };
+        \end{tikzpicture}
+    }{
+        \PackageError{\packagename}{cvSidebarPlaceSign can only be used within sidebar}{}
+    }
+}
+
+%------------------------------------------------------------
+% cvEndSidebar
+%------------------------------------------------------------
+% Called at end of sidebar. Makes sure sidebar is active and
+% switches the column to the main part
+\newcommand{\cvSidebarEnd}{
+    \ifthenelse{\equal{\cvSidebarActive}{1}}{
+        \switchcolumn
+        \gdef\cvSidebarActive{0}
+    }{
+        \PackageError{\packagename}{Sidebar can only be used once}{}
+    }
+}
+
+
+%------------------------------------------------------------
+% MAIN SECION
+%------------------------------------------------------------
+%------------------------------------------------------------
+% cvMainSectionHeader
+%------------------------------------------------------------
+% Adds a new section to the sidebar
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newcommand{\cvMainSectionHeader}[2] {
+    \ifthenelse{\equal{\cvSidebarActive}{0}}{
+        \begin{tabularx}{\linewidth}{@{}Xr@{}}
+            \textcolor{cvMainTextColor}{\Large\textbf{\uppercase{\raggedright #1}}} & \Large\textcolor{cvSectionIconColor}{#2}\\
+        \end{tabularx}\\[-2mm]
+        \raggedright\noindent\textcolor{cvMainTextColor}{\rule{\linewidth}{.5pt}} \\
+    }{
+        \PackageError{\packagename}{cvMainSectionHeader can only be used outside the sidebar}{}
+    }
+}
+
+%------------------------------------------------------------
+% cvMainSection
+%------------------------------------------------------------
+% Adds a new section to the sidebar
+% Parameter 1:          Title of the section
+% Parameter 2:          Icon of the section
+\newenvironment{cvMainSection}[2]{
+    \cvMainSectionHeader{#1}{#2}
+
+    \vspace{.4cm}%
+
+    %\tabularx{\dimexpr\cvSidebarWidth-\cvMarginLeft-\cvMarginLeft}{@{}lX@{}}% 
+}{%
+    %\endtabularx%
+    \vspace{.6cm}%
+}%
+
+
+%------------------------------------------------------------
+% cvMainWorkExperienceEntry
+%------------------------------------------------------------
+% Adds a new section to the sidebar
+% Parameter 1:          Start year of position
+% Parameter 2:          End year of position
+% Parameter 3:          Job title of position
+% Parameter 4:          Name of the company
+% Parameter 5:          Location of job
+% Parameter 6:          Short description (~1 paragraph)
+\newcommand{\cvMainWorkExperienceEntry}[6]{ % start date, end date, title, years, location, description
+    \settowidth{\cvMainWorkExperienceEntryDateTextSize}{
+        \adjustbox{valign=m}{
+            \begin{sideways}
+                \begin{minipage}{1.6cm}
+                    \begin{center}
+                        \noindent{\LARGE \textbf{#1}} \\[.1cm]
+                        \noindent{\LARGE \textbf{#2}}
+                    \end{center}
+                \end{minipage}
+            \end{sideways}
+        }
+    }
+    
+    \ifthenelse{\equal{\cvSidebarActive}{0}}{%
+        % Execute if we are outside the sidebar
+        \hspace{-.1cm}\adjustbox{valign=m}{
+            \begin{sideways}
+                \begin{minipage}{1.6cm}
+                    \begin{center}
+                        \noindent{\LARGE \textbf{\textcolor{cvMainTextColor}{#1}}} \\[.1cm]
+                        \noindent{\LARGE \textbf{\textcolor{cvMainTextColor}{#2}}}
+                    \end{center}
+                \end{minipage}
+            \end{sideways}
+        }
+        \hspace{.25cm} \textcolor{cvMainTextColor}\vline \hspace{.25cm}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\paperwidth-\cvSidebarWidth-\cvMarginRight-\columnsep-\cvMainWorkExperienceEntryDateTextSize-1mm\relax}
+                \textcolor{cvMainTextColor}{\uppercase{\large \textbf{#3}}} \\[.275cm]
+                \textcolor{cvMainTextColor}{#4} \\[.275cm]
+                \raggedright{\textcolor{cvMainTextColor}{\footnotesize{#5}}}
+            \end{minipage}
+        }\\[0.3cm]
+        \begin{minipage}{\dimexpr\linewidth}
+            \noindent\footnotesize\justifying{\textcolor{cvSidebarTextColor}{#6}}\\[0.5cm]
+        \end{minipage}
+    }{%
+        \PackageError{\packagename}{cvMainWorkExperienceEntry can only be used within sidebar}{}%
+    }%
+}
+
+
+%------------------------------------------------------------
+% cvMainTrainingEntry
+%------------------------------------------------------------
+% Adds a new training entry to the main trainings section
+% Parameter 1:          Year of the trainings
+% Parameter 2:          Trainings of that year
+\newcommand{\cvMainTrainingEntry}[2]{
+    \settowidth{\cvMainTrainingEntryDateTextSize}{
+        \hspace{-.1cm}\adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvMainTextColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+    }
+    
+    \ifthenelse{\equal{\cvSidebarActive}{0}}{%
+        \hspace{-.1cm}\adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvMainTextColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+        \hspace{.25cm} \textcolor{cvMainTextColor}\vline \hspace{.25cm}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\linewidth-\cvMainTrainingEntryDateTextSize-\cvMarginRight}
+                \textcolor{cvMainTextColor}{#2}
+            \end{minipage}
+        }\\[.5cm]
+    }{%
+        \PackageError{\packagename}{cvSidebarTrainingEntry can only be used within sidebar}{}%
+    }%
+}
+
+
+%------------------------------------------------------------
+% cvMainPublicationEntry
+%------------------------------------------------------------
+% Adds a new training entry to the main trainings section
+% Parameter 1:          Year of the publication
+% Parameter 2:          Title of the publication
+% Parameter 3:          Author(s)
+% Parameter 4:          Location of the publication
+\newcommand{\cvMainPublicationEntry}[4]{
+    \settowidth{\cvMainTrainingEntryDateTextSize}{
+        \hspace{-.1cm}\adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvMainTextColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+    }
+    
+    \ifthenelse{\equal{\cvSidebarActive}{0}}{%
+        \hspace{-.1cm}\adjustbox{valign=m}{
+            \noindent\begin{turn}{90}
+                \textcolor{cvMainTextColor}{\LARGE \textbf{#1}}
+            \end{turn}
+        }
+        \hspace{.25cm} \textcolor{cvMainTextColor}\vline \hspace{.25cm}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr\linewidth-\cvMainTrainingEntryDateTextSize-\cvMarginRight}
+                {\textcolor{cvMainTextColor}{\textbf{#2}}} \\[.15cm]
+                \textcolor{cvMainTextColor}{#3} \\[.15cm]
+                \footnotesize{\textcolor{cvMainTextColor}{#4}}
+            \end{minipage}
+        }\\[.5cm]
+    }{%
+        \PackageError{\packagename}{cvSidebarTrainingEntry can only be used within sidebar}{}%
+    }%
+}

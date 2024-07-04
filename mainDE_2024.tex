@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{ketelcv2024}
+
+\begin{document}
+
+\begin{cv}{Avatar.png}{Vorname}{Nachname}{Spezialist für komplizierte Dinge}[ngerman][Jobtitel, Jobort]
+
+    %
+    % Data Block
+    %
+    \begin{cvSidebarSection}{Daten}{\faIcon[solid]{user}}
+        \cvSidebarDataEntry{\Large\faMale}{1. Januar 1976}
+        \cvSidebarDataEntry{\faIcon{envelope}}{\href{mailto:mymail@mydomain.com}{mymail@mydomain.com}}
+        \cvSidebarDataEntry{\faPhone}{+49 123 456789}
+        \cvSidebarDataEntry{\faIcon[solid]{map-marker-alt}}{Meine Straße 11, 12345 Mein Ort}
+        \cvSidebarDataEntry{\faLinkedin}{\href{https://www.linkedin.com/in/<username>}{LinkedIn: <username>}}
+    \end{cvSidebarSection}
+
+    \begin{cvSidebarSection}{Bildung}{\faGraduationCap}
+        \cvSidebarEducationEntry{2024}{Master of Science}{Irgendeine tolle Universität}{Das ist ein langer und komplizierter Name der Fachrichtung}
+        \cvEducationSeparatorBar
+        \cvSidebarEducationEntry{2022}{Bachelor of Science}{Irgendeine tolle Universität}{Das ist ein langer und komplizierter Name der Fachrichtung}
+    \end{cvSidebarSection}
+
+    \begin{cvSidebarSection}{Sprachen}{\faIcon[solid]{globe-europe}}
+        \cvSidebarLanguageEntry{Deutsch}{Hyper}{1}
+        \cvSidebarLanguageEntry{Japanisch}{Super}{.9}
+        \cvSidebarLanguageEntry{Englisch}{Verhandlungssicher}{.85}
+        \cvSidebarLanguageEntry{Schweizerdeutsch}{Verständnis}{.4}
+    \end{cvSidebarSection}
+
+    \newpage
+
+    \begin{cvSidebarSection}{Kompetenzen}{\faIcon[solid]{cog}}
+        \cvSidebarSkillEntry{MySkill1}{Fortgeschritten}{1}
+        \cvSidebarSkillEntry{MySkill2}{Fortgeschritten}{.9}
+        \cvSidebarSkillEntry{AnotherSkill1}{Fortgeschritten}{.9}
+        \cvSidebarSkillEntry{AnotherSkill1}{Fortgeschritten}{.75}
+        \cvSidebarSkillEntry{MoreSkills1}{Fortgeschritten}{.7}
+        \cvSidebarSkillEntry{MoreSkills2}{Mittel}{.5}
+        \cvSidebarSkillEntry{MoaMoaSkills1}{Mittel}{.5}
+        \cvSidebarSkillEntry{MoaMoaSkills2}{Anfänger}{.3}
+        \cvSidebarSkillEntry{Last Skill}{Anfänger}{.2}
+    \end{cvSidebarSection}
+
+    \begin{cvSidebarSection}{Interessen}{\faIcon{gamepad}}
+        \cvSidebarInterestEntry{\large\faIcon[solid]{baby}}{Myinterest1}
+            {\large\faIcon[solid]{hamburger}}{Myinterest2}
+        \cvSidebarInterestEntry{\faIcon[solid]{layer-group}}{Myinterest3}
+            {\large\faIcon[solid]{microchip}}{Myinterest4}
+        \cvSidebarInterestEntry{\large\faIcon[solid]{robot}}{Myinterest5}
+            {\Large\faIcon[solid]{suitcase-rolling}}{Myinterest6}
+        \cvSidebarInterestEntry{\faIcon[solid]{pencil-ruler}}{Myinterest7}
+            {\large\faIcon[solid]{hammer}}{Myinterest8}
+    \end{cvSidebarSection}
+
+    \begin{cvSidebarSection}{Download}{\faIcon{download}}
+        \adjustbox{valign=m}{
+            \begin{minipage}{\dimexpr(\cvSidebarWidth-\cvMarginLeft-\cvMarginLeft)}
+                \begin{center}
+                    \textcolor{cvSidebarTextColor}{\scriptsize{Download my CV through the QR code below\faDropbox}} \\[0.3cm]
+                    \textcolor{cvSidebarTextColor}{\qrcode[height=3cm]{https://www.mydomain.com/path/to/myfile.pdf}}
+                \end{center}
+            \end{minipage}
+        }
+    \end{cvSidebarSection}
+
+    \cvSidebarPlaceSign{Mein Name}{Meine Stadt}{-0.8cm}
+
+    \cvSidebarEnd
+
+    \begin{cvMainSection}{Profil}{\faIcon[solid]{user-tie}}
+        \footnotesize\lipsum[][1-20]
+    \end{cvMainSection}
+
+    \begin{cvMainSection}{Berufserfahrung}{\faSuitcase}
+        \cvMainWorkExperienceEntry{2010}{2015}{Bester Job ever}{Beste Firma ever}{\faIcon[solid]{map-marker-alt} Tolle Stadt, Tolles Land}{\lipsum[][1-15]}
+        \cvMainWorkExperienceEntry{2015}{2024}{Noch besserer Job}{Noch bessere Stadt}{\faIcon[solid]{map-marker-alt} Bessere Stadt, Besseres Land}{\lipsum[][1-15]}
+    \end{cvMainSection}
+
+    \newpage
+
+    \begin{cvMainSection}{Fortbildungen}{\faChartLine}
+        \cvMainTrainingEntry{2024}{
+            Großartig sein\\[.3cm]
+            Noch großartiger sein\\[.3cm]
+            LaTeX for dummies
+        }
+        \cvMainTrainingEntry{2023}{
+            Mache 2023 zu deinem besten Jahr!\\[.3cm]
+            Fahrräder reparieren\\[.3cm]
+            Einführung in Latex
+        }
+        \cvMainTrainingEntry{2022}{
+            Fortbildungen für tolle Menschen\\[.3cm]
+            Schweissen für Anfänger\\[.3cm]
+            Zeitgemäßes Arbeiten mit Holz
+        }
+    \end{cvMainSection}
+
+    \begin{cvMainSection}{Veröffentlichungen}{\faMicroscope}
+        \cvMainPublicationEntry{2024}{Best of all my publications I've ever written in my life, plus some more}{D. Ketel, D. Ketel, D. Ketel and D.Ketel}{My Book about my best publications}
+        \cvMainPublicationEntry{2024}{Best of all my publications I've ever written in my life, plus some more}{D. Ketel, D. Ketel, D. Ketel and D.Ketel}{Master thesis}
+        \cvMainPublicationEntry{2023}{Best of all my publications I've ever written in my life, plus some more}{D. Ketel, D. Ketel, D. Ketel and D.Ketel}{My Book about my best publications}
+        \cvMainPublicationEntry{2022}{Best of all my publications I've ever written in my life, plus some more}{D. Ketel, D. Ketel, D. Ketel and D.Ketel}{Bachelor thesis}
+    \end{cvMainSection}
+
+    \begin{cvMainSection}{Expertise}{\faBolt}
+        \lipsum[1]
+        Fill up the paragraph to line up to the line of the sign in the sidebar.
+    \end{cvMainSection}
+
+\end{cv}
+
+\end{document}
