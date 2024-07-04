@@ -19,8 +19,11 @@ To change the colors of the template for your needs, change the definitions in t
 The colors per default are defined as comma separated Red, Green and Blue (RGB) values. Other modes are available, check out the "xcolor" package documentation.
 
 ## Fonts
-Unless you define a font, the default is <I'm still working on this...>. If you want to change the font, you need to define three variables:
+Unless you define a font, the default is Montserrat. If you want to change the font, you need to define three variables:
 - \cvMainFont
 - \cvMainItalicFont
 - \cvMainBoldFont
-You can find these three variables in the "FONT OPTIONS" section in the sty file.
+You can find these three variables in the "FONT OPTIONS" section in the sty file. I have put examples for using TTF or OTF files in there, too.
+
+[!CAUTION]
+> If you change the font, things WILL move around and even break. Please only change the font if you're willing to play with the margins and vspaces within the functions.
