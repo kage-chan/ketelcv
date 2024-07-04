@@ -87,7 +87,7 @@
 \newcommand\cvSidebarBorderDraw{0}                          % If Sidebar border not needed 0, else 1
 \newcommand\cvSidebarTriangleBorderDraw{0}                  % If Sidebar triangle border not needed 0, else 1
 \definecolor{cvSidebarTextColor}{RGB}{0, 0, 0}           % Sidebar text color
-\definecolor{cvSidebarDataIconColor}{RGB}{242, 242, 242}    % Sidebar icon color
+\definecolor{cvSidebarDataIconColor}{RGB}{235, 235, 235}    % Sidebar icon color
 \definecolor{cvAvatarBorderColor}{RGB}{255, 255, 255}       % Avatar border color
 \definecolor{cvHeaderBackColor}{RGB}{0, 165, 229}           % Header color
 \definecolor{cvHeaderBorderColor}{RGB}{0, 0, 0}             % Header border color
@@ -162,7 +162,7 @@
 % Very ugly, but I couldn't find anything better...
 \ifthenelse{\equal{\cvMainFont}{\empty}}
 {
-    \usepackage[sfdefault]{roboto}
+    \usepackage[defaultfam,tabular,lining]{montserrat}
 }{
     \ifthenelse{\equal{\cvMainBoldFont}{\empty}}
     {
