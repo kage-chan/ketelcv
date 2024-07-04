@@ -1,3 +1,5 @@
+![alt-text-1](ScreenshotP1.png "title-1") ![alt-text-2](ScreenshotP1.png "title-2")
+
 # ketelcv
 Modern, flexible and easy-to-use LaTeX template for a cv
 
