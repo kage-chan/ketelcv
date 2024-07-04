@@ -27,3 +27,7 @@ You can find these three variables in the "FONT OPTIONS" section in the sty file
 
 > [!CAUTION]
 > If you change the font, things WILL move around and could (unlikely, but could) break. Please only change the font if you're willing to play with the margins and vspaces within the functions.
+
+
+# Kown issues and problems
+1. Not an issue as such, but something that might happen: Should you get an error that mumbles something about an "missing \item" or something and you're getting big blank portions on a page, your text is most likely running into the bottom margin before you issue the \newpage command. You need to either adjust your text sizes or text length to avoid running into the bottom margin.
