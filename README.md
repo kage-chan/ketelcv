@@ -26,4 +26,4 @@ Unless you define a font, the default is Montserrat. If you want to change the f
 You can find these three variables in the "FONT OPTIONS" section in the sty file. I have put examples for using TTF or OTF files in there, too.
 
 > [!CAUTION]
-> If you change the font, things WILL move around and even break. Please only change the font if you're willing to play with the margins and vspaces within the functions.
+> If you change the font, things WILL move around and could (unlikely, but could) break. Please only change the font if you're willing to play with the margins and vspaces within the functions.
