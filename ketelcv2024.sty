@@ -77,15 +77,9 @@
 %------------------------------------------------------------
 \newcommand\packagename{ketelcv2024}
 
-\usepackage[a4paper]{geometry}
-\geometry{top=\cvMarginTop, right=\cvMarginRight, bottom=\cvMarginBottom, left=\cvMarginLeft, }
-
-\setlength{\topskip}{0mm}                                   % no top margin default
 \setlength{\parindent}{0mm}                                 % no indent default
 \pagenumbering{gobble}                                      % disable page numbering
 
-\usepackage{enumitem}
-\setlist[itemize]{noitemsep, nolistsep, leftmargin=*}       % default list style
 \overfullrule=0mm
 
 
@@ -116,6 +110,8 @@
 %------------------------------------------------------------
 % PACKAGES NEEDED
 %------------------------------------------------------------
+\usepackage[a4paper]{geometry}
+\geometry{top=\cvMarginTop, right=\cvMarginRight, bottom=\cvMarginBottom, left=\cvMarginLeft, }
 \usepackage{hyperref}
 \usepackage{ifthen}
 \usepackage{tabularx}
@@ -131,6 +127,8 @@
 \usepackage[\cvLanguages]{babel}
 \usepackage{ragged2e}
 \usepackage{lipsum}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, nolistsep, leftmargin=*}       % default list style
 
 % Very ugly, but I couldn't find anything better...
 \ifthenelse{\equal{\cvMainFont}{\empty}}
